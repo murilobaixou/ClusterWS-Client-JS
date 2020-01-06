@@ -151,9 +151,10 @@ var ClusterWS = function() {
             this.websocket.onclose = function(t) {
                 if (clearTimeout(e.pingTimeout),
                 e.events.emit("disconnect", t.code, t.reason),
-                e.options.autoReconnect && 1e3 !== t.code && (0 === e.options.autoReconnectOptions.attempts || e.reconnectionAttempted < e.options.autoReconnectOptions.attempts))
+                e.options.autoReconnect && (0 === e.options.autoReconnectOptions.attempts || e.reconnectionAttempted < e.options.autoReconnectOptions.attempts))
                     e.websocket.readyState === e.websocket.CLOSED ? (e.reconnectionAttempted++,
                     e.websocket = void 0,
+					e.events.emit("reconnect"),
                     setTimeout(function() {
                         return e.create()
                     }, Math.floor(Math.random() * (e.options.autoReconnectOptions.maxInterval - e.options.autoReconnectOptions.minInterval + 1)))) : console.log("Some thing went wrong with close event please contact developer");
